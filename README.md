@@ -17,4 +17,4 @@ OmniGPT is a comprehensive toolkit that enhances ChatGPT's capabilities by provi
 To install OmniGPT, use the following command:
 
 ```bash
-pip install omni-gpt
+git clone https://github.com/zestor/OmniGPT.git
