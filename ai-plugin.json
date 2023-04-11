@@ -1,0 +1,19 @@
+{
+  "schema_version": "v1",
+  "name_for_human": "OmniGPT",
+  "name_for_model": "retrieval",
+  "description_for_human": "OmniGPT is a comprehensive toolkit that enhances ChatGPT's capabilities.",
+  "description_for_model": "OmniGPT is a comprehensive toolkit that enhances ChatGPT's capabilities by providing a wide range of tools and utilities for tasks that go beyond language understanding. With OmniGPT, ChatGPT can perform tasks such as getting current date time (datetime) or searching the web (websearch). OmniGPT transforms ChatGPT into a multi-talented digital assistant, ready to tackle creative challenges and automate complex tasks.",
+  "auth": {
+    "type": "none"
+  },
+  "api": {
+    "type": "openapi",
+    "url": "http://localhost:3000/openapi.yaml",
+    "is_user_authenticated": false
+  },
+  "logo_url": "http://localhost:3000/logo.png",
+  "contact_email": "chrisclark@chrisclark.com", 
+  "legal_info_url": "chrisclark@chrisclark.com"
+}
+

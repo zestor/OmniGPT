@@ -1,0 +1,380 @@
+---
+openapi: 3.0.2
+info:
+  title: OmniGPT
+  description: OmniGPT is a comprehensive toolkit that enhances ChatGPT's capabilities
+    by providing a wide range of tools and utilities for tasks that go beyond language
+    understanding. With OmniGPT, ChatGPT can perform tasks such as web search, web
+    scraping, gpt agent, file operations, database operations, python code execution,
+    news retrieval, stock market information, cryptocurrency information, event calendar,
+    and much more. OmniGPT transforms ChatGPT into a multi-talented digital assistant,
+    ready to tackle creative challenges and automate complex tasks.
+  version: v1
+servers:
+- url: http://localhost:3000
+paths:
+  "/datetime":
+    get:
+      summary: Get the current date and time
+      operationId: datetime_main_datetime_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/DateTimeResponse"
+  "/websearch":
+    post:
+      summary: Search Google and Return the Top Short Web Result and Top 10 Web Links
+        (Title, Date, Url, Description)
+      operationId: websearch_main_websearch_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/WebSearchRequest"
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/WebSearchResponse"
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/HTTPValidationError"
+  "/webscraping":
+    post:
+      summary: Retrieve a web page, remove all HTML tags, and retrieve only the text
+      operationId: websearch_main_webscraping_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/WebScrapingRequest"
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/WebScrapingResponse"
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/HTTPValidationError"
+  "/webpagelinks":
+    post:
+      summary: Get all hyperlink anchor tags (Title, url) from a web page
+      operationId: websearch_main_webpagelinks_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/WebPageLinksRequest"
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/WebPageLinksResponse"
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/HTTPValidationError"
+  "/fileread":
+    post:
+      summary: Read the contents of a file
+      operationId: fileread_main_fileread_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/FileBasicRequest"
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FileBasicResponse"
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/HTTPValidationError"
+  "/filewrite":
+    post:
+      summary: Write to a file
+      operationId: filewrite_main_filewrite_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/FileBasicRequest"
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FileBasicResponse"
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/HTTPValidationError"
+  "/fileappend":
+    post:
+      summary: Append to a file
+      operationId: fileappend_main_fileappend_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/FileBasicRequest"
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FileBasicResponse"
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/HTTPValidationError"
+  "/filedelete":
+    post:
+      summary: Delete a file
+      operationId: filedelete_main_filedelete_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/FileBasicRequest"
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FileBasicResponse"
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/HTTPValidationError"
+  "/filesearch":
+    post:
+      summary: Search for text in all files
+      operationId: filesearch_main_filesearch_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/FileSearchRequest"
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FileSearchResponse"
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/HTTPValidationError"
+components:
+  schemas:
+    DateTimeResponse:
+      title: DateTimeResponse
+      required:
+      - datetime
+      type: object
+      properties:
+        datetime:
+          title: Datetime
+          type: string
+    FileBasicRequest:
+      title: FileBasicRequest
+      required:
+      - filename
+      type: object
+      properties:
+        filename:
+          title: Filename
+          type: string
+        text:
+          title: Text
+          type: string
+    FileBasicResponse:
+      title: FileBasicResponse
+      required:
+      - status
+      type: object
+      properties:
+        text:
+          title: Text
+          type: string
+        status:
+          title: Status
+          type: string
+    FileSearchRequest:
+      title: FileSearchRequest
+      required:
+      - search_text
+      type: object
+      properties:
+        search_text:
+          title: Search Text
+          type: string
+    FileSearchResponse:
+      title: FileSearchResponse
+      type: object
+      properties:
+        filenames:
+          title: Filenames
+          type: array
+          items:
+            type: string
+    HTTPValidationError:
+      title: HTTPValidationError
+      type: object
+      properties:
+        detail:
+          title: Detail
+          type: array
+          items:
+            "$ref": "#/components/schemas/ValidationError"
+    ValidationError:
+      title: ValidationError
+      required:
+      - loc
+      - msg
+      - type
+      type: object
+      properties:
+        loc:
+          title: Location
+          type: array
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+        msg:
+          title: Message
+          type: string
+        type:
+          title: Error Type
+          type: string
+    WebPageLink:
+      title: WebPageLink
+      required:
+      - url
+      type: object
+      properties:
+        title:
+          title: Title
+          type: string
+        url:
+          title: Url
+          type: string
+    WebPageLinksRequest:
+      title: WebPageLinksRequest
+      required:
+      - url
+      type: object
+      properties:
+        url:
+          title: Url
+          type: string
+    WebPageLinksResponse:
+      title: WebPageLinksResponse
+      required:
+      - results
+      type: object
+      properties:
+        results:
+          title: Results
+          type: array
+          items:
+            "$ref": "#/components/schemas/WebPageLink"
+    WebScrapingRequest:
+      title: WebScrapingRequest
+      required:
+      - url
+      type: object
+      properties:
+        url:
+          title: Url
+          type: string
+    WebScrapingResponse:
+      title: WebScrapingResponse
+      required:
+      - text
+      type: object
+      properties:
+        text:
+          title: Text
+          type: string
+    WebSearchRequest:
+      title: WebSearchRequest
+      required:
+      - query
+      type: object
+      properties:
+        query:
+          title: Query
+          type: string
+    WebSearchResponse:
+      title: WebSearchResponse
+      required:
+      - results
+      type: object
+      properties:
+        results:
+          title: Results
+          type: array
+          items:
+            "$ref": "#/components/schemas/WebSearchResult"
+    WebSearchResult:
+      title: WebSearchResult
+      type: object
+      properties:
+        title:
+          title: Title
+          type: string
+        date:
+          title: Date
+          type: string
+        url:
+          title: Url
+          type: string
+        description:
+          title: Description
+          type: string
