@@ -1,4 +1,4 @@
-Copyright (c) 2023 DataArchitects, Inc.
+None
 
 All Rights Reserved.
 
