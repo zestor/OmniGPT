@@ -4,12 +4,18 @@ from typing import Type, Optional
 import json 
 from enum import Enum
 import traceback
-
+import threading
 import uvicorn
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
 from UnicornAPI import UnicornAPI
+from selenium import webdriver
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.by import By
+from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.chrome.service import Service as ChromeService
 
 from services.ServiceBase import ServiceBase
 from services.DateTimeService import DateTimeService, DateTimeResponse
@@ -17,6 +23,9 @@ from services.WebSearchService import WebSearchService, WebSearchRequest, WebSea
 from services.WebScrapingService import WebScrapingService, WebScrapingRequest, WebScrapingResponse
 from services.WebPageLinksService import WebPageLinksService, WebPageLinksRequest, WebPageLinksResponse
 from services.FileService import FileReadService, FileWriteService, FileAppendService, FileDeleteService, FileSearchService, FileBasicRequest, FileBasicResponse, FileSearchRequest, FileSearchResponse
+
+global driver
+driver = None
 
 def print_exception_details(exc: Exception):
     # Print the type of the exception
@@ -76,8 +85,8 @@ async def datetime_main(fastrequest: Request) -> DateTimeResponse:
 @app.post("/websearch", summary="Search Google and Return the Top Short Web Result and Top 10 Web Links (Title, Date, Url, Description)")
 async def websearch_main(request: WebSearchRequest, fastRequest: Request) -> WebSearchResponse:
     try:
-        if fastRequest.headers:
-            print(f"request headers: {fastRequest.headers}")
+        #if fastRequest.headers:
+        #    print(f"request headers: {fastRequest.headers}")
         return WebSearchService().handle_request(request)
     except Exception as e:
         print_exception_details(e)
@@ -86,8 +95,8 @@ async def websearch_main(request: WebSearchRequest, fastRequest: Request) -> Web
 @app.post("/webscraping", summary="Retrieve a web page, remove all HTML tags, and retrieve only the text")
 async def websearch_main(request: WebScrapingRequest, fastRequest: Request) -> WebScrapingResponse:
     try:
-        if fastRequest.headers:
-            print(f"request headers: {fastRequest.headers}")
+        #if fastRequest.headers:
+        #    print(f"request headers: {fastRequest.headers}")
         return WebScrapingService().handle_request(request)
     except Exception as e:
         print_exception_details(e)
@@ -96,8 +105,8 @@ async def websearch_main(request: WebScrapingRequest, fastRequest: Request) -> W
 @app.post("/webpagelinks", summary="Get all hyperlink anchor tags (Title, url) from a web page")
 async def websearch_main(request: WebPageLinksRequest, fastRequest: Request) -> WebPageLinksResponse:
     try:
-        if fastRequest.headers:
-            print(f"request headers: {fastRequest.headers}")
+        #if fastRequest.headers:
+        #    print(f"request headers: {fastRequest.headers}")
         return WebPageLinksService().handle_request(request)
     except Exception as e:
         print_exception_details(e)
@@ -106,8 +115,8 @@ async def websearch_main(request: WebPageLinksRequest, fastRequest: Request) -> 
 @app.post("/fileread", summary="Read the contents of a file")
 async def fileread_main(request: FileBasicRequest, fastRequest: Request) -> FileBasicResponse:
     try:
-        if fastRequest.headers:
-            print(f"request headers: {fastRequest.headers}")
+        #if fastRequest.headers:
+        #    print(f"request headers: {fastRequest.headers}")
         return FileReadService().handle_request(request)
     except Exception as e:
         print_exception_details(e)
@@ -116,8 +125,8 @@ async def fileread_main(request: FileBasicRequest, fastRequest: Request) -> File
 @app.post("/filewrite", summary="Write to a file")
 async def filewrite_main(request: FileBasicRequest, fastRequest: Request) -> FileBasicResponse:
     try:
-        if fastRequest.headers:
-            print(f"request headers: {fastRequest.headers}")
+        #if fastRequest.headers:
+        #    print(f"request headers: {fastRequest.headers}")
         return FileWriteService().handle_request(request)
     except Exception as e:
         print_exception_details(e)
@@ -126,8 +135,8 @@ async def filewrite_main(request: FileBasicRequest, fastRequest: Request) -> Fil
 @app.post("/fileappend", summary="Append to a file")
 async def fileappend_main(request: FileBasicRequest, fastRequest: Request) -> FileBasicResponse:
     try:
-        if fastRequest.headers:
-            print(f"request headers: {fastRequest.headers}")
+        #if fastRequest.headers:
+        #    print(f"request headers: {fastRequest.headers}")
         return FileAppendService().handle_request(request)
     except Exception as e:
         print_exception_details(e)
@@ -136,8 +145,8 @@ async def fileappend_main(request: FileBasicRequest, fastRequest: Request) -> Fi
 @app.post("/filedelete", summary="Delete a file")
 async def filedelete_main(request: FileBasicRequest, fastRequest: Request) -> FileBasicResponse:
     try:
-        if fastRequest.headers:
-            print(f"request headers: {fastRequest.headers}")
+        #if fastRequest.headers:
+        #    print(f"request headers: {fastRequest.headers}")
         return FileDeleteService().handle_request(request)
     except Exception as e:
         print_exception_details(e)
@@ -146,18 +155,20 @@ async def filedelete_main(request: FileBasicRequest, fastRequest: Request) -> Fi
 @app.post("/filesearch", summary="Search for text in all files")
 async def filesearch_main(request: FileSearchRequest, fastRequest: Request) -> FileSearchResponse:
     try:
-        if fastRequest.headers:
-            print(f"request headers: {fastRequest.headers}")
+        #if fastRequest.headers:
+        #    print(f"request headers: {fastRequest.headers}")
         return FileSearchService().handle_request(request)
     except Exception as e:
         print_exception_details(e)
         raise HTTPException(status_code=500, detail="Internal Service Error")
-    
-"""
+
+"""   
 @app.on_event("startup")
 async def startup():
-    return None
+    return
 """
 
 if __name__ == "__main__":
+    #warm up
     uvicorn.run("main:app", host="localhost", port=PORT, reload=True)
+

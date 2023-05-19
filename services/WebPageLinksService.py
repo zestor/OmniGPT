@@ -29,6 +29,12 @@ class WebPageLinksService(ServiceBase):
         soup = BeautifulSoup(html_content, "html.parser")
         links = []
         for link in soup.find_all("a"):
-            links.append(WebPageLink(url=get_absolute_url(request.url,link.get("href","")), title=link.text))
-        return WebPageLinksResponse(results=links)
+            link_text = link.text
+            while "\n" in link_text:
+                link_text = link_text.replace("\n", " ")
+            while "  " in link_text:
+                link_text = link_text.replace("  ", " ")
+            link_text = link_text.strip()
+            links.append(WebPageLink(url=get_absolute_url(request.url,link.get("href","")), title=link_text))
+        return WebPageLinksResponse(results=links[:30])
 

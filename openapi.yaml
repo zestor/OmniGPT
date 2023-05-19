@@ -71,6 +71,30 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/HTTPValidationError"
+  "/webscrapinghelpsalesforce":
+    post:
+      summary: Specifically Retrieve a help.salesforce.com web page, remove all HTML
+        tags, and retrieve only the text
+      operationId: websearch_main_webscrapinghelpsalesforce_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/WebScrapingHelpSalesforceRequest"
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/WebScrapingHelpSalesforceResponse"
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/HTTPValidationError"
   "/webpagelinks":
     post:
       summary: Get all hyperlink anchor tags (Title, url) from a web page
@@ -324,6 +348,24 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/WebPageLink"
+    WebScrapingHelpSalesforceRequest:
+      title: WebScrapingHelpSalesforceRequest
+      required:
+      - url
+      type: object
+      properties:
+        url:
+          title: Url
+          type: string
+    WebScrapingHelpSalesforceResponse:
+      title: WebScrapingHelpSalesforceResponse
+      required:
+      - text
+      type: object
+      properties:
+        text:
+          title: Text
+          type: string
     WebScrapingRequest:
       title: WebScrapingRequest
       required:
